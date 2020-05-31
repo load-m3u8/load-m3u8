@@ -21,6 +21,7 @@ setuptools.setup(
     url="https://github.com/16beer/load_m3u8",
     packages=setuptools.find_packages(),
     install_requires=install_requires,
+    license="Apache License",
     classifiers=[
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: Apache Software License",
