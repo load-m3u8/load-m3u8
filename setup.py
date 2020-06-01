@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-""" Install packages for load_m3u8.py """
+""" Install packages for resolve.py """
 
 from os.path import dirname, abspath, join
 
@@ -8,11 +8,16 @@ import setuptools
 with open("README.md", "r") as fh:
     long_description = fh.read()
 
+_locals = {}
+with open("load_m3u8/_version.py") as fp:
+    exec(fp.read(), None, _locals)
+version = _locals["__version__"]
+
 install_requires = [req for req in open(abspath(join(dirname(__file__), 'requirements.txt')))]
 
 setuptools.setup(
     name="load_m3u8",
-    version="0.0.1",
+    version=version,
     author="sunmaolin.com",
     author_email="xxdx@sunmaolin.com",
     description="Download video by m3u8 file",

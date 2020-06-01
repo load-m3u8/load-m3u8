@@ -3,7 +3,6 @@
 import traceback
 
 import requests
-from Crypto.Cipher import AES
 
 user_agent = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/64.0.3282.140 Safari/537.36'
 headers = {'User-Agent': user_agent}
@@ -24,6 +23,7 @@ def load_ts(data):
             if encryptKey is None:
                 fp.write(res.content)
             else:
+                from Crypto.Cipher import AES
                 aesKey = requests.get(encryptKey.uri).content
                 fp.write(decrypt(res.content, aesKey, encryptKey.iv))
     except Exception as e:

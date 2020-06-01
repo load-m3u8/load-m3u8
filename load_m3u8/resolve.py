@@ -27,7 +27,7 @@ class Load_M3U8(object):
     video_folder: str
     ts_folder: str
 
-    def __init__(self, m3u8_url, video_path='/tmp/test.ts', process_workers=None, thread_workers=None):
+    def __init__(self, m3u8_url, video_path='/tmp/m3u8.ts', process_workers=None, thread_workers=None):
         use_process = thread_workers is None
         self.pool = ProcessPoolExecutor(max_workers=process_workers) if use_process else ThreadPoolExecutor(
             max_workers=thread_workers)
