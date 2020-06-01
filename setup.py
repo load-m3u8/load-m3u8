@@ -22,6 +22,7 @@ setuptools.setup(
     packages=setuptools.find_packages(),
     install_requires=install_requires,
     license="Apache License",
+    platforms='any',
     classifiers=[
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: Apache Software License",
