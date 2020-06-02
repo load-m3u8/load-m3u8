@@ -28,6 +28,9 @@ setuptools.setup(
     install_requires=install_requires,
     license="Apache License",
     platforms='any',
+    test_suite='tests',
+    keywords='m3u8 download m3u8',
+    entry_points={'console_scripts': "load-m3u8 = load_m3u8.__main__:main"},
     classifiers=[
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: Apache Software License",
