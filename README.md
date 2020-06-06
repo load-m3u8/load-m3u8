@@ -11,5 +11,5 @@ Load_M3U8("http://www.youtube.com/test.m3u8").run()
 ```
 pip --no-cache-dir install load-m3u8
 
-load-m3u8 -mu "http://www.youtube.com/test.m3u8"
-```
+load-m3u8 "http://www.youtube.com/test1.m3u8" "http://www.youtube.com/test2.m3u8"
+`
