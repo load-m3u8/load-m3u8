@@ -19,6 +19,8 @@ def load_ts(data):
     url, encryptKey, ts_name = data
     try:
         res = requests.get(url, headers=headers)
+        if res is None or res.content is None:
+            return 'exception end'
         with open(ts_name, 'wb') as fp:
             if encryptKey is None:
                 fp.write(res.content)
@@ -44,4 +46,5 @@ def decrypt(content, key, iv):
         cryptos = AES.new(key, AES.MODE_CBC, key)
         return cryptos.decrypt(content)
     except Exception as e:
-        print(traceback.format_exc())
+        print('Decryption failed: ', traceback.format_exc())
+        return content
