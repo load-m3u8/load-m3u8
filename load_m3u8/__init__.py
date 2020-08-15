@@ -23,7 +23,6 @@ def load_ts(data):
             if encryptKey is None:
                 fp.write(res.content)
             else:
-                from Crypto.Cipher import AES
                 aesKey = requests.get(encryptKey.uri).content
                 fp.write(decrypt(res.content, aesKey, encryptKey.iv))
     except Exception as e:
@@ -41,6 +40,7 @@ def decrypt(content, key, iv):
     :return: Decrypt content
     '''
     try:
+        from Crypto.Cipher import AES
         cryptos = AES.new(key, AES.MODE_CBC, key)
         return cryptos.decrypt(content)
     except Exception as e:
