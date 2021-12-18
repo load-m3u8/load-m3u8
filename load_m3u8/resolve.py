@@ -9,7 +9,7 @@ from urllib.parse import urljoin
 import m3u8
 from natsort import natsorted
 
-from load_m3u8 import load_ts
+from load_m3u8 import load_ts, load_ts_done
 
 windows_invalid = ['*', '|', ':', '?', '/', '<', '>', '"', '\\']
 '''Unresolvable characters in the Windows System'''
@@ -27,7 +27,7 @@ class Load_M3U8(object):
     video_folder: str
     ts_folder: str
 
-    def __init__(self, m3u8_url, video_path='/tmp/m3u8.ts', process_workers=None, thread_workers=None):
+    def __init__(self, m3u8_url, video_path='/tmp/test_m3u8.ts', process_workers=None, thread_workers=None):
         use_process = thread_workers is None
         self.pool = ProcessPoolExecutor(max_workers=process_workers) if use_process else ThreadPoolExecutor(
             max_workers=thread_workers)
@@ -52,7 +52,7 @@ class Load_M3U8(object):
         urls = self.__resolve_url()
         for index, url in enumerate(urls):
             feature = self.pool.submit(load_ts, [url[0], url[1], f'{self.ts_folder}/{index}.ts'])
-            # feature.add_done_callback(load_ts_done)
+            feature.add_done_callback(load_ts_done)
         self.pool.shutdown()
 
     def __resolve_url(self):

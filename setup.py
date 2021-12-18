@@ -19,7 +19,7 @@ setuptools.setup(
     name="load_m3u8",
     version=version,
     author="sunmaolin.com",
-    author_email="xxdx@sunmaolin.com",
+    author_email="dev@sunmaolin.com",
     description="Download video by m3u8 file",
     long_description=long_description,
     long_description_content_type="text/markdown",

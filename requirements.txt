@@ -1,5 +1,5 @@
 m3u8
 requests
 natsort
-#pycryptodome
-pycrypto
+pycryptodome
+ffmpy
