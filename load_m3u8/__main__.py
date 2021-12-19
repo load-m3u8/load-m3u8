@@ -23,7 +23,7 @@ def main(**kwargs):
     Main entry point.
     [-h] [-v] -mu M3U8_URL [-vp VIDEO_PATH] [-pw PROCESS_WORKERS] [-tw THREAD_WORKERS]
     """
-    usage = 'load_m3u8 [OPTION]... url...'
+    usage = 'load-m3u8 [OPTION]... url...'
     description = '\n\t\tDownload m3u8 video, support AES decryption'
     parser = argparse.ArgumentParser(usage=usage, description=description, add_help=True)
 
