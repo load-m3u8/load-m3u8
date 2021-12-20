@@ -103,10 +103,15 @@ class TestEncrypt(unittest.TestCase):
         outputs = ' -hls_time 60'
 
         # Set AES key
-        outputs += ' -hls_enc true -hls_enc_key 5dd0a99887d8c801 -hls_enc_iv 5dd0a99887d8c801 -hls_enc_key_url http://127.0.0.1/enc.key'
+        outputs += ' -hls_enc true -hls_enc_key 5dd0a99887d8c801 -hls_enc_iv 5dd0a99887d8c801'
+        # The AES key will be pushed to the interface through the PUT method, and the interface needs to support GET method to query the key
+        outputs += ' -method PUT -hls_enc_key_url http://127.0.0.1/enc.key'
+        outputs += ' -hls_segment_type mpegts'
+        outputs += ' -hls_flags append_list'
 
+        # sequence
         # Set video download address
-        encrypt_directory = 'C:/tmp/test/'
+        encrypt_directory = 'C:/tmp/hls/'
         if not os.path.exists(encrypt_directory):
             os.mkdir(encrypt_directory)
         outputs += ' -hls_base_url ' + encrypt_directory
@@ -115,7 +120,7 @@ class TestEncrypt(unittest.TestCase):
         outputs += ' -hls_playlist_type vod'
 
         # Set output path
-        outputs += ' -hls_segment_filename C:/tmp/test/segment_%d.ts'
+        outputs += ' -hls_segment_filename ' + encrypt_directory + 'stream_%d.ts'
         ff = ffmpy.FFmpeg(
             global_options=['-y'],
             inputs={'C:/tmp/test.ts': None},
