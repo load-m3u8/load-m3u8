@@ -1,6 +1,6 @@
 # _*_coding:utf-8_*_
 import binascii
-import traceback
+import logging
 
 import m3u8.parser
 import requests
@@ -12,9 +12,9 @@ headers = {'User-Agent': user_agent}
 
 def load_ts_done(feature):
     if feature.exception() is not None:
-        print('load ts exception: ', feature.exception())
+        logging.debug('load ts exception: %s', feature.exception())
     else:
-        print('load ts result: ', feature.result())
+        logging.debug('load ts result: %s', feature.result())
 
 
 def load_ts(data):
@@ -38,7 +38,7 @@ def load_ts(data):
                 aesKey = requests.get(encryptKey.uri, headers=headers).content
                 fp.write(decrypt(ts_data, aesKey, encryptKey.iv))
     except Exception as e:
-        print(traceback.format_exc())
+        logging.exception('load failed')
         return f'{ts_name} exception: {str(e)}'
     return f'{ts_name} succeed'
 
@@ -57,7 +57,7 @@ def decrypt(content, key, iv):
         cryptos = AES.new(key, AES.MODE_CBC, iv)
         return cryptos.decrypt(content)
     except Exception as e:
-        print('Decryption failed: ', str(e), traceback.format_exc())
+        logging.exception('decrypt failed')
         return content
 
 

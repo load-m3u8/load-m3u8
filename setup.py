@@ -9,7 +9,7 @@ with open("README.md", "r") as fh:
     long_description = fh.read()
 
 _locals = {}
-with open("load_m3u8/_version.py") as fp:
+with open("_version.py") as fp:
     exec(fp.read(), None, _locals)
 version = _locals["__version__"]
 
@@ -30,7 +30,8 @@ setuptools.setup(
     platforms='any',
     test_suite='tests',
     keywords='m3u8 m3u8-downloader m3u8-download',
-    entry_points={'console_scripts': ['load-m3u8 = load_m3u8.__main__:main']},
+    entry_points={
+        'console_scripts': ['load-m3u8 = load_m3u8.__main__:main', 'gen-m3u8 = generate_m3u8.__main__:main']},
     classifiers=[
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: Apache Software License",

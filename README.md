@@ -3,9 +3,9 @@
 
 ## Import
 ```python
-from load_m3u8.resolve import Load_M3U8
+from load_m3u8.resolve import LoadM3U8
 
-Load_M3U8("http://www.youtube.com/test.m3u8").run()
+LoadM3U8("http://www.youtube.com/test.m3u8").run()
 ```
 
 ## Usage

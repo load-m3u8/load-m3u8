@@ -5,6 +5,7 @@ from concurrent.futures.process import ProcessPoolExecutor
 from concurrent.futures.thread import ThreadPoolExecutor
 from glob import iglob
 from urllib.parse import urljoin
+import logging
 
 import m3u8
 from natsort import natsorted
@@ -15,12 +16,12 @@ windows_invalid = ['*', '|', ':', '?', '/', '<', '>', '"', '\\']
 '''Unresolvable characters in the Windows System'''
 
 
-class Load_M3U8(object):
-    '''
+class LoadM3U8(object):
+    """
         Use M3U8 file to download ts format video.
         Support video decryption by AES.
         Dependent libraries: pip install m3u8 requests natsort
-    '''
+    """
 
     m3u8_url: str
     video_path: str
@@ -65,7 +66,7 @@ class Load_M3U8(object):
                 if seq.stream_info.bandwidth > bandwidth:
                     bandwidth = seq.stream_info.bandwidth
                     self.m3u8_url = seq.absolute_uri
-            print('redirect video address: ', self.m3u8_url)
+            logging.warning('redirect video address: %s', self.m3u8_url)
             m3u8_obj = m3u8.load(self.m3u8_url)
             base_uri = m3u8_obj.base_uri
         segments = m3u8_obj.segments
