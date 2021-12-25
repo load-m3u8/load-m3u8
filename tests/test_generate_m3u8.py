@@ -2,7 +2,7 @@ import logging
 import sys
 import unittest
 
-from generate_m3u8 import resolve
+from src.generate_m3u8 import resolve
 
 debug = True
 log_level = logging.DEBUG if debug else logging.INFO

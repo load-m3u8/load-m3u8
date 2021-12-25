@@ -2,8 +2,9 @@
 [![License](https://img.shields.io/badge/license-Apache%202-4EB1BA.svg)](https://www.apache.org/licenses/LICENSE-2.0.html)
 
 ## Import
+
 ```python
-from load_m3u8.resolve import LoadM3U8
+from load_m3u8 import LoadM3U8
 
 LoadM3U8("http://www.youtube.com/test.m3u8").run()
 ```

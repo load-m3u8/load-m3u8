@@ -5,7 +5,7 @@ import logging
 import os
 import sys
 
-from _version import __version__
+from version import __version__
 from load_m3u8.resolve import LoadM3U8
 
 _options = [

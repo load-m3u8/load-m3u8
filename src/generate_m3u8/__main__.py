@@ -4,7 +4,7 @@ import argparse
 import logging
 import sys
 
-from _version import __version__
+from version import __version__
 from generate_m3u8.resolve import CreateM3U8
 
 _options = [
@@ -55,7 +55,7 @@ def main(**kwargs):
         parser.print_help()
         sys.exit()
 
-    create_obj = CreateM3U8(args.video_path, args.process_workers, args.thread_workers)
+    create_obj = CreateM3U8(args.video_path, args.m3u8_path, args.hls_time, args.hls_enc_key, args.hls_enc_iv, args.hls_enc_key_url, args.hls_base_url, args.hls_segment_filename)
     create_obj.run()
 
 

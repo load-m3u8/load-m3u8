@@ -9,7 +9,7 @@ with open("README.md", "r") as fh:
     long_description = fh.read()
 
 _locals = {}
-with open("_version.py") as fp:
+with open("src/version/__init__.py") as fp:
     exec(fp.read(), None, _locals)
 version = _locals["__version__"]
 
@@ -24,7 +24,8 @@ setuptools.setup(
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/16beer/load_m3u8",
-    packages=setuptools.find_packages(),
+    packages=setuptools.find_packages(where="src"),
+    package_dir={"": "src"},
     install_requires=install_requires,
     license="Apache License",
     platforms='any',

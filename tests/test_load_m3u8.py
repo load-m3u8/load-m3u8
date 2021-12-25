@@ -3,7 +3,7 @@ import logging
 import sys
 import unittest
 
-from load_m3u8 import resolve
+from src.load_m3u8 import resolve
 
 debug = True
 log_level = logging.DEBUG if debug else logging.INFO
