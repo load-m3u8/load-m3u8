@@ -32,14 +32,14 @@ def main(**kwargs):
     parser.add_argument('URL', nargs='*', type=str, help=argparse.SUPPRESS)
 
     download_group = parser.add_argument_group('Download options')
-    download_group.add_argument('-o', '--output-dir', default='.', help='Set output directory')
-    download_group.add_argument('-i', '--input-file', metavar='FILE', type=argparse.FileType('r'),
+    download_group.add_argument('-o', '--output_dir', default='.', help='Set output directory')
+    download_group.add_argument('-i', '--input_file', metavar='FILE', type=argparse.FileType('r'),
                                 help='Read non-playlist URLs from FILE')
 
     workers_group = parser.add_argument_group('Workers options')
     workers_group = workers_group.add_mutually_exclusive_group()
-    workers_group.add_argument('-pw', '--process_workers', type=int, nargs=1, help='number of process used')
-    workers_group.add_argument('-tw', '--thread_workers', type=int, nargs=1, help='number of threads used')
+    workers_group.add_argument('-pw', '--process_workers', type=int, help='number of process used')
+    workers_group.add_argument('-tw', '--thread_workers', type=int, help='number of threads used')
 
     args = parser.parse_args()
 

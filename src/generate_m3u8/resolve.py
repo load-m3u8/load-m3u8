@@ -69,39 +69,48 @@ class CreateM3U8(object):
     outputs: str
 
     def __init__(self, video_path, m3u8_path=None, hls_time=60, hls_enc_key=None, hls_enc_iv=None,
-                 hls_enc_key_url=None, hls_base_url=None, hls_segment_filename=None):
+                 hls_enc_key_url=None, hls_enc_key_url_method=None, hls_base_url=None, hls_segment_filename=None):
         self.video_path = video_path
-        self.m3u8_path = m3u8_path
+        self.m3u8_path = video_path + '.m3u8' if m3u8_path is None else m3u8_path
         self.hls_time = hls_time
         self.hls_enc_key = hls_enc_key
         self.hls_enc_iv = hls_enc_iv
         self.hls_enc_key_url = hls_enc_key_url
-        self.hls_base_url = hls_base_url
-        self.hls_segment_filename = hls_segment_filename
+        self.method = 'PUT' if hls_enc_key_url_method is None else hls_enc_key_url_method
+        self.hls_base_url = os.path.dirname(video_path) if hls_base_url is None else hls_base_url
+        self.hls_segment_filename = os.path.basename(
+            video_path) + '_%d.ts' if hls_segment_filename is None else hls_segment_filename + '_%d.ts'
 
-        outputs = ' -hls_time ' + str(hls_time)
+        if not self.hls_base_url.endswith('/'):
+            self.hls_base_url = self.hls_base_url + '/'
+        self.hls_segment_filename = os.path.join(self.hls_base_url, self.hls_segment_filename)
 
+        outputs = ''
         if hls_enc_key is not None:
-            outputs += ' -hls_enc true -hls_enc_key ' + hls_enc_key
+            outputs += ' -hls_enc true'
+            outputs += ' -hls_enc_key ' + self.hls_enc_key
             if hls_enc_iv is not None:
-                outputs += ' -hls_enc_iv ' + hls_enc_iv
+                outputs += ' -hls_enc_iv ' + self.hls_enc_iv
+
         if hls_enc_key_url is not None:
-            outputs += ' -method PUT -hls_enc_key_url http://127.0.0.1/enc.key'
+            outputs += ' -method ' + self.method
+            outputs += ' -hls_enc_key_url ' + self.hls_enc_key_url
 
-        outputs += ' -hls_segment_type mpegts'
         outputs += ' -hls_flags append_list'
+        outputs += ' -hls_segment_type mpegts'
         outputs += ' -hls_playlist_type vod'
-
-        if hls_base_url is not None:
-            outputs += ' -hls_base_url ' + hls_base_url
-            outputs += ' -hls_segment_filename ' + hls_segment_filename
+        outputs += ' -hls_base_url ' + self.hls_base_url
+        outputs += ' -hls_segment_filename ' + self.hls_segment_filename
+        outputs += ' -hls_time ' + str(hls_time)
         self.outputs = outputs
 
     def run(self):
         try:
-            if not self.hls_base_url.startswith(('https://', 'http://', 's3://')):
-                if not os.path.exists(self.hls_base_url):
-                    os.mkdir(self.hls_base_url)
+            if not os.path.exists(os.path.dirname(self.m3u8_path)):
+                os.makedirs(os.path.dirname(self.m3u8_path))
+            if not self.hls_base_url.startswith(('https://', 'http://', 's3://')) and not os.path.exists(
+                    self.hls_base_url):
+                os.makedirs(self.hls_base_url)
             ff = ffmpy.FFmpeg(global_options=['-y'],
                               inputs={self.video_path: None},
                               outputs={self.m3u8_path: self.outputs})

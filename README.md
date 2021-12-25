@@ -4,7 +4,7 @@
 ## Import
 
 ```python
-from load_m3u8 import LoadM3U8
+from load_m3u8.resolve import LoadM3U8
 
 LoadM3U8("http://www.youtube.com/test.m3u8").run()
 ```
@@ -13,5 +13,15 @@ LoadM3U8("http://www.youtube.com/test.m3u8").run()
 ```shell
 pip --no-cache-dir install load-m3u8
 
-load-m3u8 "http://www.youtube.com/test1.m3u8" "http://www.youtube.com/test2.m3u8"
+gen-m3u8 C:/tmp/test.ts -key 5dd0a99887d8c801
+
+load-m3u8 "C:/tmp//test.ts.m3u8" -o "c:/tmp/load"
+
+
+gen-m3u8 C:/tmp/test.ts -key 5dd0a99887d8c801 -iv 5dd0a99887d8c801 -t 120 -base "C:/tmp/segment" -m3u8 "C:/tmp/m3u8/abc.m3u8" -seg "test_stream" -url "http://127.0.0.1" -method POST -d
+
+load-m3u8 "C:/tmp/m3u8/abc.m3u8" -o "c:/tmp/load" -d -tw 2
+
+load-m3u8 "C:/tmp/m3u8/abc.m3u8" -o "c:/tmp/load" -d -pw 2
+
 ```

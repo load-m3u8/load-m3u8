@@ -18,7 +18,7 @@ def load_ts_done(feature):
 
 
 def load_ts(data):
-    url, encryptKey, ts_name = data
+    url, encrypt_key, ts_name = data
     try:
         ts_data = []
         if m3u8.parser.is_url(url):
@@ -32,11 +32,16 @@ def load_ts(data):
                     ts_data = read.read()
 
         with open(ts_name, 'wb') as fp:
-            if encryptKey is None:
+            if encrypt_key is None:
                 fp.write(ts_data)
             else:
-                aesKey = requests.get(encryptKey.uri, headers=headers).content
-                fp.write(decrypt(ts_data, aesKey, encryptKey.iv))
+                if m3u8.parser.is_url(encrypt_key.uri):
+                    aes_key = requests.get(encrypt_key.uri, headers=headers).content
+                else:
+                    with open(encrypt_key.uri, 'rb') as read:
+                        if read.readable():
+                            aes_key = read.read()
+                fp.write(decrypt(ts_data, aes_key, encrypt_key.iv))
     except Exception as e:
         logging.exception('load failed')
         return f'{ts_name} exception: {str(e)}'
