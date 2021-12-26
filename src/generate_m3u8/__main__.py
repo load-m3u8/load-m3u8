@@ -2,10 +2,11 @@
 
 import argparse
 import logging
+import os.path
 import sys
 
-from version import __version__
-from generate_m3u8.resolve import CreateM3U8
+from ..version import __version__
+from .resolve import CreateM3U8
 
 _options = [
     'help',
@@ -55,12 +56,28 @@ def main(**kwargs):
     if not args.video_path:
         parser.print_help()
         sys.exit()
+    if not os.path.exists(args.video_path):
+        print('video path does not exist')
+        sys.exit()
 
-    create_obj = CreateM3U8(args.video_path, m3u8_path=args.m3u8_path, hls_time=args.hls_time,
-                            hls_enc_key=args.hls_enc_key, hls_enc_iv=args.hls_enc_iv,
-                            hls_enc_key_url=args.hls_enc_key_url, hls_enc_key_url_method=args.hls_enc_key_url_method,
-                            hls_base_url=args.hls_base_url, hls_segment_filename=args.hls_segment_filename)
-    create_obj.run()
+    if os.path.isdir(args.video_path):
+        for tmp in os.listdir(args.video_path):
+            tmp = os.path.join(args.video_path, tmp)
+            m3u8_path = None
+            if os.path.isfile(tmp) and args.m3u8_path:
+                if os.path.isdir(args.m3u8_path) or not os.path.exists(args.m3u8_path):
+                    m3u8_path = os.path.join(args.m3u8_path, tmp + '.m3u8')
+            CreateM3U8(tmp, m3u8_path=m3u8_path, hls_time=args.hls_time,
+                       hls_enc_key=args.hls_enc_key, hls_enc_iv=args.hls_enc_iv,
+                       hls_enc_key_url=args.hls_enc_key_url,
+                       hls_enc_key_url_method=args.hls_enc_key_url_method,
+                       hls_base_url=args.hls_base_url, hls_segment_filename=args.hls_segment_filename).run()
+    else:
+        CreateM3U8(args.video_path, m3u8_path=args.m3u8_path, hls_time=args.hls_time,
+                   hls_enc_key=args.hls_enc_key, hls_enc_iv=args.hls_enc_iv,
+                   hls_enc_key_url=args.hls_enc_key_url,
+                   hls_enc_key_url_method=args.hls_enc_key_url_method,
+                   hls_base_url=args.hls_base_url, hls_segment_filename=args.hls_segment_filename).run()
 
 
 if __name__ == '__main__':

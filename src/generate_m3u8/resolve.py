@@ -81,6 +81,7 @@ class CreateM3U8(object):
         self.hls_segment_filename = os.path.basename(
             video_path) + '_%d.ts' if hls_segment_filename is None else hls_segment_filename + '_%d.ts'
 
+        self.hls_base_url = self.hls_base_url.replace('\\', '/')
         if not self.hls_base_url.endswith('/'):
             self.hls_base_url = self.hls_base_url + '/'
         self.hls_segment_filename = os.path.join(self.hls_base_url, self.hls_segment_filename)
@@ -103,6 +104,7 @@ class CreateM3U8(object):
         outputs += ' -hls_segment_filename ' + self.hls_segment_filename
         outputs += ' -hls_time ' + str(hls_time)
         self.outputs = outputs
+        logging.debug('outputs: %s', self.outputs)
 
     def run(self):
         try:
