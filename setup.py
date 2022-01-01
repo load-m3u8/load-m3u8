@@ -1,15 +1,16 @@
 #!/usr/bin/env python3
+# _*_coding:utf-8_*_
 """ Install packages for resolve.py """
 
 from os.path import dirname, abspath, join
 
 import setuptools
 
-with open("README.md", "r") as fh:
+with open("README.md", "r", encoding='UTF-8') as fh:
     long_description = fh.read()
 
 _locals = {}
-with open("src/version/__init__.py") as fp:
+with open("src/load_m3u8/version.py", "r", encoding='UTF-8') as fp:
     exec(fp.read(), None, _locals)
 version = _locals["__version__"]
 
@@ -32,7 +33,7 @@ setuptools.setup(
     test_suite='tests',
     keywords='m3u8 m3u8-downloader m3u8-download',
     entry_points={
-        'console_scripts': ['load-m3u8 = load_m3u8.__main__:main', 'gen-m3u8 = generate_m3u8.__main__:main']},
+        'console_scripts': ['load-m3u8 = load_m3u8.load.__main__:main', 'gen-m3u8 = load_m3u8.generate.__main__:main']},
     classifiers=[
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: Apache Software License",

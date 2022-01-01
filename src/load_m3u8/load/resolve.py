@@ -1,16 +1,16 @@
 # _*_coding:utf-8_*_
 
+import logging
 import os
 from concurrent.futures.process import ProcessPoolExecutor
 from concurrent.futures.thread import ThreadPoolExecutor
 from glob import iglob
 from urllib.parse import urljoin
-import logging
 
 import m3u8
 from natsort import natsorted
 
-from load_m3u8 import load_ts, load_ts_done
+from load_m3u8.load import load_ts, load_ts_done
 
 windows_invalid = ['*', '|', ':', '?', '/', '<', '>', '"', '\\']
 '''Unresolvable characters in the Windows System'''

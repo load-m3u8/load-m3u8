@@ -1,3 +1,5 @@
+# _*_coding:utf-8_*_
+
 import base64
 import binascii
 import os.path

@@ -5,8 +5,8 @@ import logging
 import os.path
 import sys
 
-from ..version import __version__
 from .resolve import CreateM3U8
+from ..version import __version__
 
 _options = [
     'help',
