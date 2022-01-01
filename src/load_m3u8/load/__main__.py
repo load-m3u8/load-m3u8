@@ -5,8 +5,8 @@ import logging
 import os
 import sys
 
-from load_m3u8._version import __version__
-from load_m3u8.resolve import Load_M3U8
+from load_m3u8.load.resolve import LoadM3U8
+from ..version import __version__
 
 _options = [
     'help',
@@ -23,7 +23,7 @@ def main(**kwargs):
     Main entry point.
     [-h] [-v] -mu M3U8_URL [-vp VIDEO_PATH] [-pw PROCESS_WORKERS] [-tw THREAD_WORKERS]
     """
-    usage = 'load_m3u8 [OPTION]... url...'
+    usage = 'load-m3u8 [OPTION]... url...'
     description = '\n\t\tDownload m3u8 video, support AES decryption'
     parser = argparse.ArgumentParser(usage=usage, description=description, add_help=True)
 
@@ -32,19 +32,22 @@ def main(**kwargs):
     parser.add_argument('URL', nargs='*', type=str, help=argparse.SUPPRESS)
 
     download_group = parser.add_argument_group('Download options')
-    download_group.add_argument('-o', '--output-dir', default='.', help='Set output directory')
-    download_group.add_argument('-I', '--input-file', metavar='FILE', type=argparse.FileType('r'),
+    download_group.add_argument('-o', '--output_dir', default='.', help='Set output directory')
+    download_group.add_argument('-i', '--input_file', metavar='FILE', type=argparse.FileType('r'),
                                 help='Read non-playlist URLs from FILE')
 
     workers_group = parser.add_argument_group('Workers options')
     workers_group = workers_group.add_mutually_exclusive_group()
-    workers_group.add_argument('-pw', '--process_workers', type=int, nargs=1, help='number of process used')
-    workers_group.add_argument('-tw', '--thread_workers', type=int, nargs=1, help='number of threads used')
+    workers_group.add_argument('-pw', '--process_workers', type=int, help='number of process used')
+    workers_group.add_argument('-tw', '--thread_workers', type=int, help='number of threads used')
 
     args = parser.parse_args()
 
-    if args.debug:
-        logging.getLogger().setLevel(logging.DEBUG)
+    log_level = logging.DEBUG if args.debug else logging.INFO
+    logging.basicConfig(level=log_level,
+                        format='%(asctime)s %(filename)s [line:%(lineno)d] %(levelname)s %(message)s',
+                        datefmt='%Y-%m-%d %H:%M:%S',
+                        stream=sys.stdout)
 
     m3u8_urls = []
     if args.input_file:
@@ -62,10 +65,9 @@ def main(**kwargs):
     for m3u8_url in m3u8_urls:
         video_path = os.path.join(abspath, str(index) + '.ts')
         index = index + 1
-        load_obj = Load_M3U8(m3u8_url, video_path=video_path, process_workers=args.process_workers,
-                             thread_workers=args.thread_workers)
+        load_obj = LoadM3U8(m3u8_url, video_path, args.process_workers, args.thread_workers)
         load_obj.run()
-        print('Video download is complete, video address: \n', load_obj.video_path)
+        logging.info('Video download is complete, video address: %s', load_obj.video_path)
 
 
 if __name__ == '__main__':
