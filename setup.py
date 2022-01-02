@@ -5,6 +5,7 @@
 from os.path import dirname, abspath, join
 
 import setuptools
+import py2exe
 
 with open("README.md", "r", encoding='UTF-8') as fh:
     long_description = fh.read()
@@ -40,4 +41,5 @@ setuptools.setup(
         "Operating System :: OS Independent",
     ],
     python_requires='>=3.6',
+    console=['src/load_m3u8/version.py']
 )
